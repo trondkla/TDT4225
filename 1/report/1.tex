@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage{url}
 \usepackage{subfig}
+\usepackage{listings}
 \usepackage{verbatim}
 \usepackage{SIunits}
 \usepackage{multirow}
@@ -45,9 +46,12 @@ Gunnar Inge Gjøvik Sortland
  
 \end{titlepage}
 
-\begin{table}
-\caption{SSD}
-\label{SDD}
+Vi har i dette forsøket målt lesetid for en fil på 1GB fra SSD (\ref{SSD}), USB-minnepinne (\ref{USB}) og fra ordinær disk (\ref{HDD}). Mellom hver testkjøring ble en annen fil på 1GB lest inn. Dette ble gjort for å flushe cache, slik at hver kjøring blir uavhengig. 
+
+\begin{table}[h!]
+\caption{Lesing av fil fra SSD OS (OSX)}
+\label{SSD}
+\centering
 \begin{tabular}{|l|l|l|l|}
 \hline
 \multirow{2}{*}{ Antall parallelle delfiler} & \multicolumn{3}{|c|}{Blokkstørrelse} \\
@@ -62,9 +66,73 @@ Gunnar Inge Gjøvik Sortland
 tilfeldig &  0.557162  &  0.528545  & 0.455504 \\
 \hline
 \end{tabular}
- 
-
 \end{table}
 
+
+
+
+\begin{table}[h!]
+\caption{Lesing av fil fra USB minnepenn OS (OSX)}
+\label{USB}
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{ Antall parallelle delfiler} & \multicolumn{3}{|c|}{Blokkstørrelse} \\
+ & 1024 & 4096 & 16384\\
+\hline
+1         &  16.234150 &   3.767864 &  3.344575 \\
+2         &  20.408997 &  18.982415 &  0.663746 \\
+4         &  37.190572 &  24.239117 &  4.832422 \\
+8         &  37.350119 &  23.450713 &  8.085149 \\
+16        &  37.177314 &  22.697717 &  7.437184 \\
+32        &  36.742863 &  20.060136 &  6.026335 \\
+tilfeldig &  16.653403 &   6.609872 &  8.190838 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\caption{Lesing av fil fra Harddisk (Linux)}
+\label{HDD}
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{ Antall parallelle delfiler} & \multicolumn{3}{|c|}{Blokkstørrelse} \\
+ & 1024 & 4096 & 16384\\
+\hline
+1         &  0.164577 &  0.175946 & 0.078445 \\
+2         &  0.162454 &  0.167318 & 0.080339 \\
+4         &  0.165226 &  0.166446 & 0.075153 \\
+8         &  0.167294 &  0.167608 & 0.074378 \\
+16        &  0.167984 &  0.169632 & 0.080130 \\
+32        &  0.172327 &  0.167756 & 0.076714 \\
+tilfeldig &  8.910377 &  0.169295 & 4.817989 \\
+\hline
+\end{tabular}
+\end{table}
+
+Tabell \ref{SSD} viser kjøring ved SSD. Vi ser en generell trend ved at økt blokkstørrelse gir lavere lesetid.
+Ved økt antall parallelle åpne filer får vi noe høyere lesetid. 
+Ved bruk av SSD er søketiden relativt lav, slik at vi forventer at dette ikke utgjør så mye som ved vanlig harddisk. Tabell \ref{HDD} viser at dette ikke utgjør så mye som vi kunne forvente.
+På grunn av praktiske hensyn er det vanskelig å sammenligne lesetid direkte, men trendene kan likevel sammenlignes.
+
+Lesing fra USB er, naturlig nok, veldig tregt i og med at dette er via USB og minnepennen var av billig modell. Vi ser her at fra 4 til 32 parallelle filer påvirkes ikke lesehastighet signifikant. Vi ser også her at større blokker gir raskere lesing.
+
+\clearpage
+\section{Appendix}
+\subsection{Makefile}
+\lstinputlisting{../code/Makefile}
+
+\clearpage
+\subsection{benchmark.h}
+\lstinputlisting{../code/benchmark.h}
+
+\clearpage
+\subsection{benchmark.cpp}
+\lstinputlisting{../code/benchmark.cpp}
+
+\clearpage
+\subsection{test.cpp}
+\lstinputlisting{../code/test.cpp}
 
 \end{document}

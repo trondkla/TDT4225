@@ -46,7 +46,11 @@ Gunnar Inge Gjøvik Sortland
 
 \end{titlepage}
 
-Vi har i dette forsøket målt lesetid for en fil på 1GB fra SSD (\ref{SSD}), USB-minnepinne (\ref{USB}) og fra ordinær disk (\ref{HDD}). Mellom hver testkjøring ble en annen fil på 1GB lest inn. Dette ble gjort for å flushe cache, slik at hver kjøring blir uavhengig. 
+Vi har i dette forsøket målt lesetid for en fil på 1GB fra SSD
+(\ref{SSD}), USB-minnepinne (\ref{USB}) og fra ordinær disk
+(\ref{HDD}). Mellom hver testkjøring ble en annen fil på 1GB lest
+inn. Dette ble gjort for å flushe cache, slik at hver kjøring blir
+uavhengig.
 
 \begin{table}[h!]
 \caption{Lesing av fil fra SSD OS (OSX)}
@@ -70,6 +74,7 @@ tilfeldig &  0.557162  &  0.528545  & 0.455504 \\
 
 \begin{figure}[h!]
   \caption{SDD}
+  \label{fig:sdd}
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-sdd}
 \end{figure}
@@ -97,6 +102,7 @@ tilfeldig &  16.653403 &   6.609872 &  8.190838 \\
 
 \begin{figure}[h!]
   \caption{Plot of reading times using USB stick}
+  \label{fig:usb}
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-usb}
 \end{figure}
@@ -123,16 +129,29 @@ tilfeldig &  8.910377 &  0.169295 & 4.817989 \\
 
 \begin{figure}[h!]
   \caption{HDD}
+  \label{fig:hdd}
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-hdd}
 \end{figure}
 
-Tabell \ref{SSD} viser kjøring ved SSD. Vi ser en generell trend ved at økt blokkstørrelse gir lavere lesetid.
-Ved økt antall parallelle åpne filer får vi noe høyere lesetid. 
-Ved bruk av SSD er søketiden relativt lav, slik at vi forventer at dette ikke utgjør så mye som ved vanlig harddisk. Tabell \ref{HDD} viser at dette ikke utgjør så mye som vi kunne forvente.
-På grunn av praktiske hensyn er det vanskelig å sammenligne lesetid direkte, men trendene kan likevel sammenlignes.
+Tabell \ref{SSD} og figur \ref{fig:sdd} viser kjøring ved SSD. Vi ser
+en generell trend ved at økt blokkstørrelse gir lavere lesetid. Ved
+økt antall parallelle åpne filer får vi noe høyere lesetid. Ved bruk
+av SSD er søketiden relativt lav, slik at vi forventer at dette ikke
+utgjør så mye som ved vanlig harddisk. Tabell \ref{HDD} og figur
+\ref{fig:hdd} viser at dette ikke utgjør så mye som vi kunne forvente.
+På grunn av praktiske hensyn er det vanskelig å sammenligne lesetid
+direkte, men trendene kan likevel sammenlignes.
 
-Lesing fra USB er, naturlig nok, veldig tregt i og med at dette er via USB og minnepennen var av billig modell. Vi ser her at fra 4 til 32 parallelle filer påvirkes ikke lesehastighet signifikant. Vi ser også her at større blokker gir raskere lesing.
+Lesing fra USB er, naturlig nok, veldig tregt som tabell \ref{USB} og
+figur \ref{fig:usb} viser. Dette skyldes trolig at overføringen er via
+USB og minnepennen var av billig modell.
+
+Vi ser her at fra 4 til 32 parallelle filer påvirkes ikke
+lesehastighet signifikant. Vi ser også her at større blokker gir
+raskere lesing.
+
+
 
 \clearpage
 \section{Appendix}

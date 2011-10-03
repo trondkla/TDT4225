@@ -43,7 +43,7 @@ Gunnar Inge Gjøvik Sortland
 {\large \today}
  
 \end{center}
- 
+
 \end{titlepage}
 
 Vi har i dette forsøket målt lesetid for en fil på 1GB fra SSD (\ref{SSD}), USB-minnepinne (\ref{USB}) og fra ordinær disk (\ref{HDD}). Mellom hver testkjøring ble en annen fil på 1GB lest inn. Dette ble gjort for å flushe cache, slik at hver kjøring blir uavhengig. 
@@ -68,7 +68,11 @@ tilfeldig &  0.557162  &  0.528545  & 0.455504 \\
 \end{tabular}
 \end{table}
 
-
+\begin{figure}[h!]
+  \caption{SDD}
+  \centering
+  \includegraphics[width=0.5\textwidth]{res/result-sdd}
+\end{figure}
 
 
 \begin{table}[h!]
@@ -91,6 +95,12 @@ tilfeldig &  16.653403 &   6.609872 &  8.190838 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[h!]
+  \caption{Plot of reading times using USB stick}
+  \centering
+  \includegraphics[width=0.5\textwidth]{res/result-usb}
+\end{figure}
+
 \begin{table}[h!]
 \caption{Lesing av fil fra Harddisk (Linux)}
 \label{HDD}
@@ -110,6 +120,12 @@ tilfeldig &  8.910377 &  0.169295 & 4.817989 \\
 \hline
 \end{tabular}
 \end{table}
+
+\begin{figure}[h!]
+  \caption{HDD}
+  \centering
+  \includegraphics[width=0.5\textwidth]{res/result-hdd}
+\end{figure}
 
 Tabell \ref{SSD} viser kjøring ved SSD. Vi ser en generell trend ved at økt blokkstørrelse gir lavere lesetid.
 Ved økt antall parallelle åpne filer får vi noe høyere lesetid. 

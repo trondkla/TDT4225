@@ -46,11 +46,41 @@ Gunnar Inge Gjøvik Sortland
 
 \end{titlepage}
 
-Vi har i dette forsøket målt lesetid for en fil på 1GB fra SSD
-(\ref{SSD}), USB-minnepinne (\ref{USB}) og fra ordinær disk
-(\ref{HDD}). Mellom hver testkjøring ble en annen fil på 1GB lest
-inn. Dette ble gjort for å flushe cache, slik at hver kjøring blir
-uavhengig.
+\section{Oppsett}
+Vi har i dette forsøket målt lesetid for en fil på 1GB fra tre ulike
+lagringsmedier.
+
+Disse var Solid State disk (SSD) (\ref{SSD}), USB-minnepinne
+(\ref{USB}) og fra ordinær disk (\ref{HDD}). For å sikre at hver test
+ble uavhengig ble en fil på 1GB lest inn mellom hver av de, for å
+flushe cache.
+
+Testprogrammet kjører automatisk benchmarking for de 21 test
+tilfellende gitt av oppgaven, og ble kjørt på hver av de tre mediene.
+
+Grunnet mangel på tilgjengelig utstyr ble testene kjørt på to ulike
+maskiner. Spesifikasjoner er gitt i tabell \ref{tab:hardware}. Dette
+kan medføre at ulikheter i lesehastighet ikke bare skyldes mediet, men
+også andre forhold. Trendene vi ser bør likevel være representive.
+
+\begin{table}[h!]
+ \caption{Benyttet maskinvare}
+ \label{tab:hardware}
+  \centering
+  \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Lagringsmedium} & \textbf{OS} & Filsystem \\
+\hline
+\hline
+SDD & OSX & HFS+ \\
+USB & OSX & FAT32 \\
+HDD & Ubuntu & ext4 \\
+
+\hline
+\end{tabular}
+\end{table}
+
+\section{Resultater}
 
 \begin{table}[h!]
 \caption{Lesing av fil fra SSD OS (OSX)}
@@ -78,7 +108,6 @@ tilfeldig &  0.557162  &  0.528545  & 0.455504 \\
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-sdd}
 \end{figure}
-
 
 \begin{table}[h!]
 \caption{Lesing av fil fra USB minnepenn OS (OSX)}
@@ -136,38 +165,49 @@ tilfeldig &  8.910377 &  0.169295 & 4.817989 \\
 
 Tabell \ref{SSD} og figur \ref{fig:sdd} viser kjøring ved SSD. Vi ser
 en generell trend ved at økt blokkstørrelse gir lavere lesetid. Ved
-økt antall parallelle åpne filer får vi noe høyere lesetid. Ved bruk
-av SSD er søketiden relativt lav, slik at vi forventer at dette ikke
-utgjør så mye som ved vanlig harddisk. Tabell \ref{HDD} og figur
-\ref{fig:hdd} viser at dette ikke utgjør så mye som vi kunne forvente.
-På grunn av praktiske hensyn er det vanskelig å sammenligne lesetid
-direkte, men trendene kan likevel sammenlignes.
+økt antall parallelle åpne filer får vi noe høyere lesetid.
 
 Lesing fra USB er, naturlig nok, veldig tregt som tabell \ref{USB} og
-figur \ref{fig:usb} viser. Dette skyldes trolig at overføringen er via
-USB og minnepennen var av billig modell.
+figur \ref{fig:usb} viser.
+
+\section{Drøfting og konklusjon}
+Ved bruk av SSD er søketiden relativt lav, slik at vi forventer at
+dette ikke utgjør så mye som ved vanlig harddisk. Tabell \ref{HDD} og
+figur \ref{fig:hdd} viser at dette ikke utgjør så mye som vi kunne
+forvente.  På grunn av praktiske hensyn er det vanskelig å sammenligne
+lesetid direkte, men trendene kan likevel sammenlignes.
+
+Lesing via USB var, som nevnt, meget tregt.  Dette skyldes trolig at
+overføringen er via USB og minnepennen var av billig modell.
 
 Vi ser her at fra 4 til 32 parallelle filer påvirkes ikke
 lesehastighet signifikant. Vi ser også her at større blokker gir
 raskere lesing.
 
+Lesing fra ordinær harddisk ble lite påvirket av antall parallelle
+lesinger. Dette skyldes trolig god caching slik at søketid i stor grad
+ble maskert. Vi ser likevel at ved lesing fra tilfeldig adresse øker
+lesetiden veldig ved blokkstørrelse 1024 og 16384. Denne øker ikke ved
+blokkstørrelse 4096, noe man forventer at skal skje.
+
 
 
 \clearpage
 \section{Appendix}
-\subsection{Makefile}
+
+\clearpage
+\subsection{\texttt{test.cpp} - Main program}
+\lstinputlisting{../code/test.cpp}
+
+\subsection{\texttt{Makefile}}
 \lstinputlisting{../code/Makefile}
 
 \clearpage
-\subsection{benchmark.h}
+\subsection{\texttt{benchmark.h}}
 \lstinputlisting{../code/benchmark.h}
 
 \clearpage
-\subsection{benchmark.cpp}
+\subsection{\texttt{benchmark.cpp}}
 \lstinputlisting{../code/benchmark.cpp}
-
-\clearpage
-\subsection{test.cpp}
-\lstinputlisting{../code/test.cpp}
 
 \end{document}

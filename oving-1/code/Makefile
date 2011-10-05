@@ -3,7 +3,7 @@ OBJ = $(SRC:.cpp=.o)
 EXECUTABLE=program
 
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -O0
 LIBS = 
 INCLUDES = -I.
 

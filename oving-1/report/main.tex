@@ -69,12 +69,12 @@ også andre forhold. Trendene vi ser bør likevel være representive.
   \centering
   \begin{tabular}{|l|l|l|l|}
 \hline
-\textbf{Lagringsmedium} & \textbf{OS} & Filsystem  & Hardware \\
+\textbf{Lagringsmedium} & \textbf{OS} & Filsystem  & Disk & Hardware \\
 \hline
 \hline
-SSD & OSX    & HFS+  & MacBook Pro 15" \\
-USB & OSX    & FAT32 & MacBook Pro 15" med USB 2.1 \\
-HDD & Ubuntu & ext4  & Egenbygget Intel Core 2 Duo 3 GHz, SATA HDD 7200 rpm \\
+SSD & OSX    & HFS+  & 550 mbps & MacBook Pro 15" \\
+USB & OSX    & FAT32 & 8mbps    &MacBook Pro 15" med USB 2.1 \\
+HDD & Ubuntu & ext4  & 7200 rpm & Egenbygget Intel Core 2 Duo 3 GHz, SATA HDD 7200 rpm \\
 
 \hline
 \end{tabular}
@@ -93,7 +93,7 @@ Vi forventer en del forstyrrelser fra OS, men regner med at SSD vil være raskes
 
 \section{Resultater}
 
-\begin{table}[h!]
+\begin{table}%[h!]
 \caption{Lesing av fil fra SSD OS (OSX)}
 \label{SSD}
 \centering
@@ -113,14 +113,14 @@ tilfeldig &  0.557162  &  0.528545  & 0.455504 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
   \caption{SSD}
   \label{fig:sdd}
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-sdd}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}%[h!]
 \caption{Lesing av fil fra USB minnepenn OS (OSX)}
 \label{USB}
 \centering
@@ -140,14 +140,14 @@ tilfeldig &  16.653403 &   6.609872 &  8.190838 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
   \caption{Plot of reading times using USB stick}
   \label{fig:usb}
   \centering
   \includegraphics[width=0.5\textwidth]{res/result-usb}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}%[h!]
 \caption{Lesing av fil fra Harddisk (Linux)}
 \label{HDD}
 \centering
@@ -167,7 +167,7 @@ tilfeldig &  8.910377 &  0.169295 & 4.817989 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}%[h!]
   \caption{HDD}
   \label{fig:hdd}
   \centering
@@ -180,6 +180,18 @@ en generell trend ved at økt blokkstørrelse gir lavere lesetid. Ved
 
 Lesing fra USB er, naturlig nok, veldig tregt som tabell \ref{USB} og
 figur \ref{fig:usb} viser.
+
+\begin{figure}%[h!]
+  \centering
+  \subfloat[1024]{\label{fig:1024}\includegraphics[width=0.3\textwidth]{res/1024}}
+  \subfloat[4096]{\label{fig:4096}\includegraphics[width=0.3\textwidth]{res/4096}}
+  \subfloat[16386]{\label{fig:16386}\includegraphics[width=0.3\textwidth]{res/16386}}
+  \caption{Lesetid for hvert medium ved ulike blokkstørrelser}
+  \label{fig:blocksizes}
+\end{figure}
+
+Figur \ref{fig:blocksizes} sammenligner lesehastighet ved hver av
+gitte blokkstørrelsene.
 
 \section{Drøfting og konklusjon}
 Ved bruk av SSD er søketiden relativt lav, slik at vi forventer at

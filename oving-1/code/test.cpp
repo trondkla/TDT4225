@@ -75,14 +75,13 @@ int main(int argc, char **argv)
     
     std::vector<uint32_t>::const_iterator bs;
     
-    
-    
     for(bs=blocksizes.begin(); bs!=blocksizes.end(); bs++){
         for (int i = 1; i<=32; i = i<<1){
             // Clear buffers
             if (runGarbage){
                 if(debug) printf("Reading garbage...\n");
                 read(garbage.c_str(), sizeGarbage, 1, sizeof(uint32_t));
+		system("sync; echo 3 > /proc/sys/vm/drop_caches");    
             }
             
             // Read file
@@ -123,14 +122,16 @@ std::streampos getSize(const char * filename)
 double read(const char * filename, std::streampos size, int n_files, int blocksize)
 {
     if (debug) printf("\n%d files: ", n_files);
-    std::ifstream files[n_files];
-    
+    FILE * files[n_files];
+
     // Open files, and set pos
     for (int i = 0; i<n_files; ++i)
     {
-        files[i].open(filename);
-        std::streampos pos = (size/n_files)*i;
-        files[i].seekg(pos, std::ios_base::beg);
+	files[i] = fopen ( filename, "rb" );
+
+        long int pos = (size/n_files)*i;
+	fseek ( files[i], pos, SEEK_SET );
+	
         if (debug) printf("%lld, ", (unsigned long long) pos);
     }
     if (debug) printf("\n");
@@ -138,58 +139,80 @@ double read(const char * filename, std::streampos size, int n_files, int blocksi
     // Read size/n_files bytes from all files
     Benchmark t; t.start();
     
-    char * buffer = new char[blocksize];
+    uint32_t * buffer = (uint32_t *) malloc(blocksize);
     
     // Every slice is 250' / number of files big
-    for (uint32_t i=0; i<(size/sizeof(uint32_t)/n_files); i+=blocksize)
+    for (uint32_t i=0; i<(size/n_files); i+=blocksize)
     {
         // should be unrolled?
         for (int j = 0; j<n_files; ++j)
-        {
-            
-            files[j].read(buffer, blocksize);
-            //	printf("%4d", buffer);
-        }
-        //    printf("\n");
+	  {
+	    //	  size_t res =  
+	    fread(buffer, 1, blocksize, files[j] );
+	    
+	    /*
+	  for (uint32_t z=0; z<blocksize/sizeof(int); ++z)
+	  {
+	  if (buffer[z] == 0)
+	  printf("Read first byte\n");
+	  if (buffer[z] == 249999999)
+	  printf("Read last byte\n");
+	  // fprintf(stderr, "Reading %d \n", buffer[z]);
+	  }
+	    //*/
+	  }
     }
     t.stop();
     
     // Close all files
+    free(buffer);
     for (int i = 0; i<n_files; ++i)
-        files[i].close();
+      fclose(files[i]);
     
     return t.getSecs();
 }
 
 double random_read(const char * filename, std::streampos size, int blocksize)
 {
-    std::ifstream file;
-    
-    // Open files, and set pos
-    file.open(filename);
-    std::streampos pos = std::rand()%size;
-    
-    file.seekg(pos, std::ios_base::beg);
-    if (debug) printf("%lld \n", (unsigned long long) pos);
+    FILE * file;
+
+    file = fopen ( filename, "rb" );
+
+    if (debug) printf("\n");
     
     // Read size/n_files bytes from all files
     Benchmark t; t.start();
     
-    char * buffer = new char[blocksize];
+    uint32_t * buffer = (uint32_t *) malloc(blocksize);
     
     // Every slice is 250' / number of files big
-    for (uint32_t i=0; i<(size/sizeof(uint32_t)); i+=blocksize)
+    for (uint32_t i=0; i<size; i+=blocksize)
     {
-        
-        file.read(buffer, blocksize);
-        //    printf("\n");
+      long int pos = rand() % size;
+      fseek ( file, pos, SEEK_SET );
+      //      size_t res = 
+      fread(buffer, 1, blocksize, file );
+      
+      /*
+	for (uint32_t z=0; z<blocksize/sizeof(int); ++z)
+	{
+	if (buffer[z] == 0)
+	printf("Read first byte\n");
+	if (buffer[z] == 249999999)
+	printf("Read last byte\n");
+	      // fprintf(stderr, "Reading %d \n", buffer[z]);
+	      }
+      //*/
+      
     }
     t.stop();
     
     // Close all files
-    file.close();
+    free(buffer);
+    fclose(file);
     
     return t.getSecs();
 }
+
 
 

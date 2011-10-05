@@ -69,16 +69,27 @@ også andre forhold. Trendene vi ser bør likevel være representive.
   \centering
   \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Lagringsmedium} & \textbf{OS} & Filsystem \\
+\textbf{Lagringsmedium} & \textbf{OS} & Filsystem  & Hardware \\
 \hline
 \hline
-SDD & OSX & HFS+ \\
-USB & OSX & FAT32 \\
-HDD & Ubuntu & ext4 \\
+SDD & OSX    & HFS+  & MacBook Pro 15" \\
+USB & OSX    & FAT32 & MacBook Pro 15" med USB 2.1 \\
+HDD & Ubuntu & ext4  & Egenbygget Intel Core 2 Duo 3 GHz, SATA HDD 7200 rpm \\
 
 \hline
 \end{tabular}
 \end{table}
+
+\section{Forventninger}
+Vi forventer en fin graf der større blokkstørrelse gir raskere resultater.
+Også er det forventet at jo flere filer som blir lest samtidlig, jo dårligere blir ytelsen. Dette fordi de forskjellige filene vil avbryte hverandre med interupts.
+På random forventer vi gjevnt dårlige resultater, siden den må hoppe såpass mye.
+SSD forventes å være raskest og best på random, siden den har det enklere å hoppe enn harddisken som må flytte leserhodet. USBen er forventet å oppføre seg mye som SDD-en, bare tregere.
+
+Den optimale blokkstørrelsen ville være en som fylter opp minnebåndbredden, slik at du ikke har tomme spor, eller må dele opp blokkene i flere mindre blokker med tomme spor.
+
+Vi forventer en del forstyrrelser fra OS, men regner med at SDD vil være raskest, så HDD og til slutt USB.
+
 
 \section{Resultater}
 

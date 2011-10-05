@@ -76,21 +76,33 @@ int main(int argc, char **argv)
     std::vector<uint32_t>::const_iterator bs;
     
     for(bs=blocksizes.begin(); bs!=blocksizes.end(); bs++){
-        for (int i = 1; i<=32; i = i<<1){
-            // Clear buffers
-            if (runGarbage){
-                if(debug) printf("Reading garbage...\n");
-                read(garbage.c_str(), sizeGarbage, 1, sizeof(uint32_t));
-		system("sync; echo 3 > /proc/sys/vm/drop_caches");    
-            }
-            
-            // Read file
-            //printf("Reading with %d concurrent files open... bs: %d \n", i, *bs);
-            double t = read(filename.c_str(), size, i, *bs);
-            printf("%2d files(%d): %.6f sec\n", i, *bs, t);
-        }
-        double t = random_read(filename.c_str(), size, *bs);
-        printf("random block(%d): %.6f sec\n", *bs, t);
+
+      //* Run parallel reads
+      for (int i = 1; i<=32; i = i<<1){
+	// Clear buffers
+	if (runGarbage){
+	  if(debug) printf("Reading garbage...\n");
+	  read(garbage.c_str(), sizeGarbage, 1, sizeof(uint32_t));
+	  system("sync; echo 3 > /proc/sys/vm/drop_caches");    
+	}
+        
+	// Read file
+	//printf("Reading with %d concurrent files open... bs: %d \n", i, *bs);
+	double t = read(filename.c_str(), size, i, *bs);
+	printf("%2d files(%d): %.6f sec\n", i, *bs, t);
+      }
+      //*/
+      
+      //* Run random read
+      if (runGarbage){
+	if(debug) printf("Reading garbage...\n");
+	read(garbage.c_str(), sizeGarbage, 1, sizeof(uint32_t));
+	system("sync; echo 3 > /proc/sys/vm/drop_caches");    
+      }
+      
+      double t = random_read(filename.c_str(), size, *bs);
+      printf("random block(%d): %.6f sec\n", *bs, t);
+      //*/
     }
 }
 
@@ -186,7 +198,8 @@ double random_read(const char * filename, std::streampos size, int blocksize)
     uint32_t * buffer = (uint32_t *) malloc(blocksize);
     
     // Every slice is 250' / number of files big
-    for (uint32_t i=0; i<size; i+=blocksize)
+    //    for (uint32_t i=0; i<size; i+=blocksize)
+    for (uint32_t i=0; i<=249999999; ++i)
     {
       long int pos = rand() % size;
       fseek ( file, pos, SEEK_SET );
